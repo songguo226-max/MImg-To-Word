@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MathOCR Pro</title>
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <main class="app">
+    <header class="topbar">
+      <div class="brand" aria-label="MathOCR Pro">
+        <span class="brand-mark" aria-hidden="true">Σ</span>
+        <span class="brand-copy">
+          <span class="brand-name">MathOCR Pro</span>
+          <span class="brand-subtitle">数学题转 Word</span>
+        </span>
+      </div>
+      <nav class="nav-buttons" aria-label="页面切换" role="tablist">
+        <button id="convertTab" class="nav-button active" type="button" role="tab" aria-selected="true" aria-controls="convertView">转换</button>
+        <button id="settingsTab" class="nav-button" type="button" role="tab" aria-selected="false" aria-controls="settingsView">设置</button>
+      </nav>
+    </header>
+
+    <section id="convertView" class="view convert-view active" role="tabpanel" aria-labelledby="convertTab">
+      <div class="view-head">
+        <div>
+          <p class="eyebrow">工作台</p>
+          <h1>转换工作台</h1>
+        </div>
+        <div class="summary-chip" aria-live="polite">
+          <span id="globalSummary">0 / 0 完成</span>
+        </div>
+      </div>
+
+      <form id="uploadForm" class="upload-panel">
+        <input id="fileInput" class="file-input" type="file" accept=".png,.jpg,.jpeg,.webp" multiple>
+        <div id="dropzone" class="dropzone" tabindex="0" role="button" aria-label="选择或拖入图片">
+          <div class="drop-icon" aria-hidden="true">↑</div>
+          <div class="drop-copy">
+            <div class="drop-title">上传图片开始转换</div>
+            <div id="dropHint" class="drop-hint">PNG / JPG / JPEG / WEBP，可多选</div>
+          </div>
+          <button id="selectFiles" class="primary-button" type="button">选择图片</button>
+        </div>
+      </form>
+
+      <div class="list-header">
+        <h2>任务队列 <span id="jobCount" class="count-pill">0</span></h2>
+        <div class="queue-actions">
+          <button id="downloadAll" class="muted-button queue-download" type="button" hidden>下载全部</button>
+          <button id="cancelAll" class="text-danger" type="button" hidden>取消全部</button>
+        </div>
+      </div>
+
+      <div id="jobList" class="job-list" aria-live="polite">
+        <div class="empty-state">
+          <span class="empty-icon" aria-hidden="true">∑</span>
+          <strong>队列为空</strong>
+          <span>等待图片上传</span>
+        </div>
+      </div>
+
+      <footer class="progress-footer">
+        <div class="global-progress" aria-label="整体进度">
+          <div id="globalProgressBar"></div>
+        </div>
+        <div id="tokenSummary" class="token-summary" aria-live="polite">已消耗 0 tokens</div>
+      </footer>
+    </section>
+
+    <section id="settingsView" class="view settings-view" role="tabpanel" aria-labelledby="settingsTab">
+      <div class="view-head">
+        <div>
+          <p class="eyebrow">配置</p>
+          <h1>模型设置</h1>
+        </div>
+        <p id="settingsMessage" class="settings-message status-idle" role="status" aria-live="polite">API Key 默认掩码显示；保存后新的转换任务会读取这组配置。</p>
+      </div>
+
+      <form id="settingsForm" class="settings-layout">
+        <section class="settings-panel" aria-labelledby="modelSettingsTitle">
+          <h2 id="modelSettingsTitle">模型</h2>
+          <label class="field">
+            <span>模型名称</span>
+            <input id="modelInput" name="model" autocomplete="off" placeholder="kimi-k2.6">
+          </label>
+          <label class="field">
+            <span>Base URL</span>
+            <input id="baseUrlInput" name="base_url" autocomplete="off" placeholder="https://api.moonshot.cn/v1">
+          </label>
+        </section>
+
+        <section class="settings-panel" aria-labelledby="credentialSettingsTitle">
+          <h2 id="credentialSettingsTitle">凭据与并发</h2>
+          <label class="field">
+            <span>API Key</span>
+            <input id="apiKeyInput" name="api_key" type="password" autocomplete="off" placeholder="输入 API Key">
+          </label>
+          <label class="field">
+            <span>并发数量</span>
+            <input id="maxWorkersInput" name="max_workers" type="number" min="1" max="16" step="1">
+          </label>
+          <div class="settings-actions">
+            <button id="testSettings" class="muted-button" type="button">测试连接</button>
+            <button class="primary-button" type="submit">保存设置</button>
+          </div>
+        </section>
+
+        <section class="settings-panel cost-panel" aria-labelledby="costSettingsTitle">
+          <h2 id="costSettingsTitle">费用估算</h2>
+          <p class="panel-note">按模型平台标注的“每 100 万 tokens”单价填写；不知道价格可填 0，只统计消耗量。</p>
+          <label class="field">
+            <span>发送给模型单价（元 / 100 万 tokens）</span>
+            <input id="inputTokenPriceInput" name="input_token_price_per_million" type="number" min="0" step="0.0001" inputmode="decimal" placeholder="例如 4">
+          </label>
+          <label class="field">
+            <span>模型生成单价（元 / 100 万 tokens）</span>
+            <input id="outputTokenPriceInput" name="output_token_price_per_million" type="number" min="0" step="0.0001" inputmode="decimal" placeholder="例如 16">
+          </label>
+        </section>
+      </form>
+    </section>
+  </main>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+.pytest_cache/
+
+# Virtual environments
+.venv
+
+# Secrets & local config
+.env
+settings.local.json
+
+# Third-party binaries (install pandoc separately: https://pandoc.org/installing.html)
+pandoc.exe
+
+# Runtime data
+runtime/
+output/
+uploads/
+
+# AI tool state
+.superpowers/
+.impeccable/
+docs/superpowers/
+
+# Input images (user data, not code)
+img/*
+!img/.gitkeep
